@@ -642,20 +642,20 @@ type Order struct {
 	ReferenceID    string           `json:"refid"`
 	UserRef        int              `json:"userref"`
 	Status         string           `json:"status"`
-	OpenTime       float64          `json:"opentm"`
-	StartTime      float64          `json:"starttm"`
-	ExpireTime     float64          `json:"expiretm"`
+	OpenTime       json.Number      `json:"opentm"`
+	StartTime      json.Number      `json:"starttm"`
+	ExpireTime     json.Number      `json:"expiretm"`
 	Description    OrderDescription `json:"descr"`
 	Volume         string           `json:"vol"`
-	VolumeExecuted float64          `json:"vol_exec,string"`
-	Cost           float64          `json:"cost,string"`
-	Fee            float64          `json:"fee,string"`
-	Price          float64          `json:"price,string"`
-	StopPrice      float64          `json:"stopprice,string"`
-	LimitPrice     float64          `json:"limitprice,string"`
+	VolumeExecuted json.Number      `json:"vol_exec,string"`
+	Cost           json.Number      `json:"cost,string"`
+	Fee            json.Number      `json:"fee,string"`
+	Price          json.Number      `json:"price,string"`
+	StopPrice      json.Number      `json:"stopprice,string"`
+	LimitPrice     json.Number      `json:"limitprice,string"`
 	Misc           string           `json:"misc"`
 	OrderFlags     string           `json:"oflags"`
-	CloseTime      float64          `json:"closetm"`
+	CloseTime      json.Number      `json:"closetm"`
 	Reason         string           `json:"reason"`
 	TradesID       []string         `json:"trades"`
 }
