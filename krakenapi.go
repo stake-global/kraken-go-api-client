@@ -560,6 +560,22 @@ func (api *KrakenAPI) WithdrawInfo(asset string, key string, amount *big.Float) 
 	return resp.(*WithdrawInfoResponse), nil
 }
 
+// QueryTrades shows trades
+func (api *KrakenAPI) QueryTrades(txids string, args map[string]string) (*QueryTradesResponse, error) {
+	params := url.Values{"txid": {txids}}
+	if value, ok := args["trades"]; ok {
+		params.Add("trades", value)
+	}
+
+	resp, err := api.queryPrivate("QueryOrders", params, &QueryTradesResponse{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.(*QueryTradesResponse), nil
+}
+
 // Query sends a query to Kraken api for given method and parameters
 func (api *KrakenAPI) Query(method string, data map[string]string) (interface{}, error) {
 	values := url.Values{}
