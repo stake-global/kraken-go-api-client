@@ -567,7 +567,7 @@ func (api *KrakenAPI) QueryTrades(txids string, args map[string]string) (*QueryT
 		params.Add("trades", value)
 	}
 
-	resp, err := api.queryPrivate("QueryOrders", params, &QueryTradesResponse{})
+	resp, err := api.queryPrivate("QueryTrades", params, &QueryTradesResponse{})
 
 	if err != nil {
 		return nil, err
