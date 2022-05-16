@@ -577,6 +577,9 @@ type TradeHistoryInfo struct {
 	Misc          string  `json:"misc"`
 }
 
+// QueryTradesResponse response when checking all trades associated with order
+type QueryTradesResponse map[string]TradeHistoryInfo
+
 // TradeInfo represents a trades information
 type TradeInfo struct {
 	Price         string
