@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"net/url"
 	"reflect"
+	"strconv"
 	"testing"
+	"time"
 )
 
 var publicAPI = New("", "")
@@ -85,6 +87,21 @@ func TestOHLCWithInterval(t *testing.T) {
 
 	if resp.Pair == "" {
 		t.Errorf("OHLCWithInterval() should return valid Pair, got %+v", resp.Pair)
+	}
+}
+
+func TestOHLCWithIntervalAndSince(t *testing.T) {
+	resp, err := publicAPI.OHLCWithIntervalAndSince(XTZUSD, "15", strconv.FormatInt(time.Now().Unix(), 10))
+	if err != nil {
+		t.Errorf("TestOHLCWithIntervalAndSince() should not return an error, got %s", err)
+	}
+
+	if resp.Pair == "" {
+		t.Errorf("TestOHLCWithIntervalAndSince() should return valid Pair, got %+v", resp.Pair)
+	}
+
+	if resp.Last == 0 {
+		t.Errorf("TestOHLCWithIntervalAndSince() should return valid Last, got %+v", resp.Pair)
 	}
 }
 

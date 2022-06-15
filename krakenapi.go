@@ -210,6 +210,51 @@ func (api *KrakenAPI) OHLCWithInterval(pair string, interval string) (*OHLCRespo
 	return ret, nil
 }
 
+func (api *KrakenAPI) OHLCWithIntervalAndSince(pair string, interval string, epochSince string) (*OHLCResponse, error) {
+	urlValue := url.Values{}
+
+	if epochSince == "" || epochSince == "0" {
+		return nil, fmt.Errorf("Unsupported value for epochSince: " + epochSince + " (use OHLCWithInterval)")
+	}
+
+	urlValue.Add("since", epochSince)
+	urlValue.Add("pair", pair)
+
+	switch interval {
+	// supported values https://www.kraken.com/features/api#get-ohlc-data
+	case "1", "5", "15", "30", "60", "240", "1440", "10080", "21600":
+		urlValue.Add("interval", interval)
+	default:
+		return nil, fmt.Errorf("Unsupported value for Interval: " + interval)
+	}
+
+	// Returns a map[string]interface{} as an interface{}
+	interfaceResponse, err := api.queryPublic("OHLC", urlValue, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// Converts the interface into map[string]interface{}
+	mapResponse := interfaceResponse.(map[string]interface{})
+	// Extracts the list of OHLC from the map to build a slice of interfaces
+	OHLCsUnstructured := mapResponse[pair].([]interface{})
+
+	ret := new(OHLCResponse)
+	for _, OHLCInterfaceSlice := range OHLCsUnstructured {
+		OHLCObj, OHLCErr := NewOHLC(OHLCInterfaceSlice.([]interface{}))
+		if OHLCErr != nil {
+			return nil, OHLCErr
+		}
+
+		ret.OHLC = append(ret.OHLC, OHLCObj)
+	}
+
+	ret.Pair = pair
+	ret.Last = mapResponse["last"].(float64)
+
+	return ret, nil
+}
+
 // OHLC returns a OHLCResponse struct based on the given pair
 func (api *KrakenAPI) OHLC(pair string) (*OHLCResponse, error) {
 	ret, err := api.OHLCWithInterval(pair, "1")
