@@ -13,6 +13,7 @@ import (
 	"mime"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -237,7 +238,23 @@ func (api *KrakenAPI) OHLCWithIntervalAndSince(pair string, interval string, epo
 	// Converts the interface into map[string]interface{}
 	mapResponse := interfaceResponse.(map[string]interface{})
 	// Extracts the list of OHLC from the map to build a slice of interfaces
-	OHLCsUnstructured := mapResponse[pair].([]interface{})
+	var returnedPairName string
+	if _, ok := mapResponse[pair]; ok {
+		returnedPairName = pair
+	} else {
+		keys := reflect.ValueOf(mapResponse).MapKeys()
+		for _, key := range keys {
+			if key.String() != "last" {
+				returnedPairName = key.String()
+			}
+		}
+
+		if mapResponse[returnedPairName] == nil {
+			return nil, fmt.Errorf("Failed to read response from Kraken ")
+		}
+	}
+
+	OHLCsUnstructured := mapResponse[returnedPairName].([]interface{})
 
 	ret := new(OHLCResponse)
 	for _, OHLCInterfaceSlice := range OHLCsUnstructured {
