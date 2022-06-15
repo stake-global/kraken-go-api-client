@@ -266,7 +266,7 @@ func (api *KrakenAPI) OHLCWithIntervalAndSince(pair string, interval string, epo
 		ret.OHLC = append(ret.OHLC, OHLCObj)
 	}
 
-	ret.Pair = pair
+	ret.Pair = returnedPairName
 	ret.Last = mapResponse["last"].(float64)
 
 	return ret, nil
