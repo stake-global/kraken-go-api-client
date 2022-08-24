@@ -7,7 +7,7 @@ A simple API Client for the [Kraken](https://www.kraken.com/ "Kraken") Trading p
 
 Example usage:
 
-```go
+```
 package main
 
 import (
