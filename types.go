@@ -506,6 +506,21 @@ type DepositAddressesResponse []struct {
 	New      bool   `json:"new,omitempty"`
 }
 
+// DepositStatusResponse is the response type of a DepositStatus query to the Kraken API.
+type DepositStatusResponse []struct {
+	Method     string    `json:"method"`
+	AClass     string    `json:"aclass"`
+	Asset      string    `json:"asset"`
+	RefID      string    `json:"refid"`
+	TxID       string    `json:"txid"`
+	Info       string    `json:"info"`
+	Amount     string    `json:"amount"`
+	Fee        big.Float `json:"fee"`
+	Time       int32     `json:"time"`
+	Status     string    `json:"status"`
+	StatusProp string    `json:"status-prop"`
+}
+
 // WithdrawResponse is the response type of a Withdraw query to the Kraken API.
 type WithdrawResponse struct {
 	RefID string `json:"refid"`
