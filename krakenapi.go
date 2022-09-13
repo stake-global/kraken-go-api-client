@@ -360,13 +360,13 @@ func (api *KrakenAPI) Trades(pair string, since int64) (*TradesResponse, error) 
 }
 
 // Balance returns all account asset balances
-func (api *KrakenAPI) Balance() (*BalanceResponse, error) {
-	resp, err := api.queryPrivate("Balance", url.Values{}, &BalanceResponse{})
+func (api *KrakenAPI) Balance() (map[string]interface{}, error) {
+	resp, err := api.queryPrivate("Balance", url.Values{}, make(map[string]interface{}))
 	if err != nil {
 		return nil, err
 	}
 
-	return resp.(*BalanceResponse), nil
+	return resp.(map[string]interface{}), nil
 }
 
 // TradeBalance returns trade balance info
