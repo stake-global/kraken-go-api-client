@@ -624,10 +624,13 @@ func (api *KrakenAPI) WithdrawInfo(asset string, key string, amount *big.Float) 
 
 // DepositStatus returns information about recent deposits made.
 func (api *KrakenAPI) DepositStatus(asset string, method string) (*DepositStatusResponse, error) {
-	resp, err := api.queryPrivate("DepositStatus", url.Values{
-		"asset":  {asset},
-		"method": {method},
-	}, &DepositStatusResponse{})
+	values := url.Values{}
+	values.Add("asset", asset)
+	if len(method) > 0 {
+		values.Add("method", method)
+	}
+
+	resp, err := api.queryPrivate("DepositStatus", values, &DepositStatusResponse{})
 	if err != nil {
 		return nil, err
 	}
